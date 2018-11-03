@@ -7,8 +7,8 @@ num_dict = {}  # type: Dict[int, int]
 # Knobs to turn
 sample_size = 24    # how big of a set of numbers to choose from
 ticket_numbers = 8   # how many numbers to generate
-hot_number_weight = 1  # counter bonus for hot numbers
-random_generation = 1000  # how many random numbers to add to the
+hot_number_weight = 3  # counter bonus for hot numbers
+random_generation = 5000  # how many random numbers to add to the formula
 
 print "[[[ Missouri Lottery - Number Generator ]]]"
 print "Get the most recent csv from: http://www.molottery.com/winningNumbers.do?method=forward#Lotto"
@@ -69,7 +69,10 @@ for tickets in range(ticket_numbers):
     rando = sorted(random.sample(range(1,len(lotto_set)), 6))
 
     for j in rando:
+
         ticket_nums.append(lotto_set[j])
+
+
 
     ticket_nums.sort(key=int)
     all_picks.append(ticket_nums)

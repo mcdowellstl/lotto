@@ -32,8 +32,6 @@ with open('lo.csv') as csv_file:
                     num_dict[number] = number_total + 1
         line_count += 1
 
-print num_dict
-
 # Read the most recent lotto numbers (last year) as a subset and add weight
 with open('lo_2018.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
@@ -105,12 +103,12 @@ while len(all_picks) < ticket_numbers:
         # print str(ticket_nums) + " { o:" + str(odd_counter) + " e:" + str(even_counter) + " l:" + str(low_numbers) + " h:" + str(high_numbers) + "}"
         print str(ticket_nums)
 
-# playing = raw_input("Playing these numbers? (Y or N)")
-# if playing in ['y', 'yes', 'Y', "Yes", 'YES']:
-#     with open("play_history.txt", "a") as logfile:
-#         logfile.write((datetime.datetime.now().ctime()) + ":\n")
-#         for num in all_picks:
-#             logfile.write(str(num) + "\n")
-#         for num in dq_nums:
-#             logfile.write(str(num) + "\n")
-#         logfile.write("\n")
+playing = raw_input("Playing these numbers? (Y or N)")
+if playing in ['y', 'yes', 'Y', "Yes", 'YES']:
+    with open("play_history.txt", "a") as logfile:
+        logfile.write((datetime.datetime.now().ctime()) + ":\n")
+        for num in all_picks:
+            logfile.write(str(num) + "\n")
+        for num in dq_nums:
+            logfile.write(str(num) + "\n")
+        logfile.write("\n")

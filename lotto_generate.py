@@ -64,19 +64,25 @@ for r in num_dict_sorted_keys:
 print "Today's Recommended plays:"
 
 all_picks = []
-for tickets in range(ticket_numbers):
+
+while len(all_picks) < ticket_numbers:
     ticket_nums = []
     rando = sorted(random.sample(range(1,len(lotto_set)), 6))
 
+    # Only a valid selection if there are >1 odd and >1 even numbers
+    odd_counter = 0
+    even_counter = 0
     for j in rando:
-
+        if j % 2 == 0:
+            even_counter += 1
+        else:
+            odd_counter += 1
         ticket_nums.append(lotto_set[j])
 
-
-
     ticket_nums.sort(key=int)
-    all_picks.append(ticket_nums)
-    print ticket_nums
+    if (odd_counter >= 2) and (even_counter >= 2):
+        all_picks.append(ticket_nums)
+        print ticket_nums
 
 playing = raw_input("Playing these numbers? (Y or N)")
 if playing in ['y', 'yes', 'Y', "Yes", 'YES']:

@@ -33,7 +33,7 @@ with open('lo.csv') as csv_file:
         line_count += 1
 
 # Read the most recent lotto numbers (last year) as a subset and add weight
-with open('lo_2018.csv') as csv_file:
+with open('lo.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     line_count = 0
     for row in csv_reader:
@@ -44,6 +44,8 @@ with open('lo_2018.csv') as csv_file:
                     number_total = num_dict[number]
                     num_dict[number] = number_total + hot_number_weight
         line_count += 1
+        if line_count > 104:
+            break
 
 # Add in random number generation to the weighting
 for i in range(random_generation):

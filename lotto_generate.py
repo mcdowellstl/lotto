@@ -7,8 +7,9 @@ num_dict = {}  # type: Dict[int, int]
 # Knobs to turn
 sample_size = 32    # how big of a set of numbers to choose from
 ticket_numbers = 8   # how many numbers to generate
-hot_number_weight = 2  # counter bonus for hot numbers
-random_generation = 1000  # how many random numbers to add to the formula
+hot_number_weight = 3  # counter bonus for hot numbers
+random_generation = 2000  # how many random numbers to add to the formula
+total_eval_pool = 0
 
 print "[[[ Missouri Lottery - Number Generator ]]]"
 print "Get the most recent csv from: http://www.molottery.com/winningNumbers.do?method=forward#Lotto"
@@ -31,6 +32,7 @@ with open('lo.csv') as csv_file:
                     number_total = num_dict[number]
                     num_dict[number] = number_total + 1
         line_count += 1
+        total_eval_pool += 6
 
 # Read the most recent lotto numbers (last year) as a subset and add weight
 with open('lo.csv') as csv_file:
@@ -44,6 +46,7 @@ with open('lo.csv') as csv_file:
                     number_total = num_dict[number]
                     num_dict[number] = number_total + hot_number_weight
         line_count += 1
+        total_eval_pool += (hot_number_weight * 6)
         if line_count > 104:
             break
 
@@ -51,6 +54,7 @@ with open('lo.csv') as csv_file:
 for i in range(random_generation):
     rnum = random.randint(1, 44)
     num_dict[number] = number_total + 1
+    total_eval_pool += 1
 
 # Generate subset of numbers based on the most likely numbers to surface
 lotto_set = []
@@ -82,8 +86,10 @@ while len(all_picks) < ticket_numbers:
     even_counter = 0
     high_numbers = 0
     low_numbers = 0
+    number_sum = 0
 
     for k in ticket_nums:
+        number_sum += k
         if k % 2 == 0:
             even_counter += 1
         else:
@@ -94,23 +100,32 @@ while len(all_picks) < ticket_numbers:
         else:
             high_numbers += 1
 
+
+
     if (odd_counter < 2) or (even_counter < 2):
         dq_nums.append(str(ticket_nums) + "-DQ(odd/even)")
         # print(str(ticket_nums) + "-DQ(odd/even)")
     elif (low_numbers < 2) or (high_numbers < 2):
         dq_nums.append(str(ticket_nums) + "-DQ(low/high)")
         # print(str(ticket_nums) + "-DQ(low/high)")
+    if (number_sum < 91) or (number_sum > 173):
+        dq_nums.append(str(ticket_nums) + "-DQ(sum outlier)")
+        # print(str(ticket_nums) + "-DQ(sum outlier)")
     else:
         all_picks.append(ticket_nums)
         # print str(ticket_nums) + " { o:" + str(odd_counter) + " e:" + str(even_counter) + " l:" + str(low_numbers) + " h:" + str(high_numbers) + "}"
         print str(ticket_nums)
 
-playing = raw_input("Playing these numbers? (Y or N)")
-if playing in ['y', 'yes', 'Y', "Yes", 'YES']:
-    with open("play_history.txt", "a") as logfile:
-        logfile.write((datetime.datetime.now().ctime()) + ":\n")
-        for num in all_picks:
-            logfile.write(str(num) + "\n")
-        for num in dq_nums:
-            logfile.write(str(num) + "\n")
-        logfile.write("\n")
+# playing = raw_input("Playing these numbers? (Y or N)")
+# if playing in ['y', 'yes', 'Y', "Yes", 'YES']:
+#     with open("play_history.txt", "a") as logfile:
+#         logfile.write((datetime.datetime.now().ctime()) + ":\n")
+#         for num in all_picks:
+#             logfile.write(str(num) + "\n")
+#         for num in dq_nums:
+#             logfile.write(str(num) + "\n")
+#         logfile.write("\n")
+
+print
+print "- - - - - - - - - - - - - - "
+print "Number of records analyzed: " + str(total_eval_pool)

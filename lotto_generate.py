@@ -1,14 +1,15 @@
 import random
 import csv
 import datetime
+import statistics
 
 num_dict = {}  # type: Dict[int, int]
 
 # Knobs to turn
 sample_size = 32    # how big of a set of numbers to choose from
 ticket_numbers = 8   # how many numbers to generate
-hot_number_weight = 3  # counter bonus for hot numbers
-random_generation = 2000  # how many random numbers to add to the formula
+hot_number_weight = 2  # counter bonus for hot numbers
+random_generation = 3000  # how many random numbers to add to the formula
 total_eval_pool = 0
 
 print "[[[ Missouri Lottery - Number Generator ]]]"
@@ -101,6 +102,7 @@ while len(all_picks) < ticket_numbers:
             high_numbers += 1
 
 
+    set_stdev = statistics.stdev(ticket_nums)
 
     if (odd_counter < 2) or (even_counter < 2):
         dq_nums.append(str(ticket_nums) + "-DQ(odd/even)")
@@ -108,12 +110,14 @@ while len(all_picks) < ticket_numbers:
     elif (low_numbers < 2) or (high_numbers < 2):
         dq_nums.append(str(ticket_nums) + "-DQ(low/high)")
         # print(str(ticket_nums) + "-DQ(low/high)")
-    if (number_sum < 85) or (number_sum > 188):
+    elif (number_sum < 85) or (number_sum > 188):
         dq_nums.append(str(ticket_nums) + "-DQ(sum outlier)")
-        # print(str(ticket_nums) + "-DQ(sum outlier)")
+        # print(str(ticket_nums) + "-DQ(sum outlier): " + str(number_sum))
+    elif (set_stdev < 8.0) or (set_stdev > 16.0):
+        dq_nums.append(str(ticket_nums) + "-DQ(std deviation)")
+        # print(str(ticket_nums) + "-DQ(std deviation): " + str(set_stdev))
     else:
         all_picks.append(ticket_nums)
-        # print str(ticket_nums) + " { o:" + str(odd_counter) + " e:" + str(even_counter) + " l:" + str(low_numbers) + " h:" + str(high_numbers) + "}"
         print str(ticket_nums)
 
 # playing = raw_input("Playing these numbers? (Y or N)")

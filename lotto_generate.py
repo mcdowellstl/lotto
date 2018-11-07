@@ -108,7 +108,7 @@ while len(all_picks) < ticket_numbers:
     elif (low_numbers < 2) or (high_numbers < 2):
         dq_nums.append(str(ticket_nums) + "-DQ(low/high)")
         # print(str(ticket_nums) + "-DQ(low/high)")
-    if (number_sum < 91) or (number_sum > 173):
+    if (number_sum < 85) or (number_sum > 188):
         dq_nums.append(str(ticket_nums) + "-DQ(sum outlier)")
         # print(str(ticket_nums) + "-DQ(sum outlier)")
     else:
